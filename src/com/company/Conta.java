@@ -18,7 +18,18 @@ public class Conta implements IConta  {
 
     @Override
     public void sacar(double valor) {
-        saldo -= valor;
+        if (this.sacarDinheiro(valor)){
+            this.saldo -=valor;
+        }else{
+            System.out.println(String.format("Não há salvo suficiente para esta operação"));
+        }
+    }
+
+    private boolean sacarDinheiro(double valor){
+        if(this.saldo<valor){
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -28,8 +39,10 @@ public class Conta implements IConta  {
 
     @Override
     public void transferir(double valor, IConta contaDestino) {
-        this.sacar(valor);
-        contaDestino.depositar(valor);
+        if(this.sacarDinheiro(valor)){
+            this.sacar((valor));
+            contaDestino.depositar(valor);
+        }
     }
 
     @Override
